@@ -44,7 +44,7 @@ public class GetOrdersByUserTest {
         availableIds = orderClient.getAvailableIds();
         expectedOrderIds = orderGenerator.getOrderIds(availableIds, 2, true);
         order = new Order(expectedOrderIds);
-        ValidatableResponse orderResponse = orderClient.createOrder(order, accessToken);
+        orderClient.createOrder(order, accessToken);
     }
 
     @Test

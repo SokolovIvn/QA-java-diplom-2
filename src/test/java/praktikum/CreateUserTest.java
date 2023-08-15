@@ -1,16 +1,16 @@
 package praktikum;
 
-import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import praktikum.Tools.UserGenerator;
 import praktikum.User.User;
 import praktikum.User.UserClient;
+
 import static org.hamcrest.Matchers.equalTo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
 
 public class CreateUserTest {
     private final UserClient userClient = new UserClient();
@@ -20,10 +20,7 @@ public class CreateUserTest {
 
     @Before
     public void setUp() {
-        user = new User()
-                .setEmail(userGenerator.getEmail())
-                .setPassword(userGenerator.getPassword())
-                .setName(userGenerator.getName());
+        user = new User().setEmail(userGenerator.getEmail()).setPassword(userGenerator.getPassword()).setName(userGenerator.getName());
     }
 
     @Test
@@ -32,9 +29,7 @@ public class CreateUserTest {
         ValidatableResponse response = userClient.createUser(user);
         String accessTokenBearer = response.extract().path("accessToken");
         accessToken = accessTokenBearer.split(" ")[1];
-        response
-                .body("success", equalTo(true))
-                .statusCode(HttpStatus.SC_OK);
+        response.body("success", equalTo(true)).statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -44,10 +39,7 @@ public class CreateUserTest {
         String accessTokenBearer = response1.extract().path("accessToken");
         accessToken = accessTokenBearer.split(" ")[1];
         ValidatableResponse response2 = userClient.createUser(user);
-        response2
-                .body("success", equalTo(false))
-                .body("message", equalTo("User already exists"))
-                .statusCode(HttpStatus.SC_FORBIDDEN);
+        response2.body("success", equalTo(false)).body("message", equalTo("User already exists")).statusCode(HttpStatus.SC_FORBIDDEN);
     }
 
     @Test
@@ -55,10 +47,7 @@ public class CreateUserTest {
     public void createUserWithoutEmail() {
         user = user.setEmail("");
         ValidatableResponse response = userClient.createUser(user);
-        response
-                .body("success", equalTo(false))
-                .body("message", equalTo("Email, password and name are required fields"))
-                .statusCode(HttpStatus.SC_FORBIDDEN);
+        response.body("success", equalTo(false)).body("message", equalTo("Email, password and name are required fields")).statusCode(HttpStatus.SC_FORBIDDEN);
     }
 
     @Test
@@ -66,10 +55,7 @@ public class CreateUserTest {
     public void createUserWithoutPassword() {
         user = user.setPassword("");
         ValidatableResponse response = userClient.createUser(user);
-        response
-                .body("success", equalTo(false))
-                .body("message", equalTo("Email, password and name are required fields"))
-                .statusCode(HttpStatus.SC_FORBIDDEN);
+        response.body("success", equalTo(false)).body("message", equalTo("Email, password and name are required fields")).statusCode(HttpStatus.SC_FORBIDDEN);
     }
 
     @Test
@@ -77,10 +63,7 @@ public class CreateUserTest {
     public void createUserWithoutName() {
         user = user.setName("");
         ValidatableResponse response = userClient.createUser(user);
-        response
-                .body("success", equalTo(false))
-                .body("message", equalTo("Email, password and name are required fields"))
-                .statusCode(HttpStatus.SC_FORBIDDEN);
+        response.body("success", equalTo(false)).body("message", equalTo("Email, password and name are required fields")).statusCode(HttpStatus.SC_FORBIDDEN);
     }
 
     @After
